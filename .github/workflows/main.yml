@@ -24,19 +24,17 @@ jobs:
             curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
             sudo mv kustomize /usr/local/bin
 
-        - name: 'Install Scaffold'
-          run: | 
-            echo "Current directory: $(pwd)"
-            echo "Downloading Scaffold..."
-            curl -L https://github.com/scaffold/scaffold/releases/latest/download/scaffold-linux-amd64 -o scaffold
-            echo "Download complete. File size: $(wc -c < scaffold) bytes"
-            echo "File contents:"
-            cat scaffold
-            echo "Making scaffold executable..."
-            chmod +x scaffold
-            echo "Moving scaffold to /usr/local/bin..."
-            sudo mv scaffold /usr/local/bin
-            echo "Installation complete"
+        - name: 'Check for Scaffold in repository'
+          run: |
+            if [ -f "./scaffold" ]; then
+              echo "Scaffold found in repository"
+              chmod +x ./scaffold
+              sudo mv ./scaffold /usr/local/bin/
+            else
+              echo "Scaffold not found in repository"
+              echo "Please add the Scaffold binary to your repository or provide the correct download URL"
+              exit 1
+            fi
 
         - name: 'Verify Scaffold Installation'
           run: |
@@ -48,13 +46,7 @@ jobs:
             scaffold --help || echo "Failed to get help"
 
         - name: Scaffold Initialization
-          run: |
-            echo "Running scaffold init --skip-build"
-            scaffold init --skip-build
-          continue-on-error: true
+          run: scaffold init --skip-build
 
         - name: Build Artifact
-          run: |
-            echo "Running scaffold build"
-            scaffold build --manifests.kustomize.paths=overlay/dev
-          continue-on-error: true
+          run: scaffold build --manifests.kustomize.paths=overlay/dev
