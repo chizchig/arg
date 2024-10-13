@@ -53,4 +53,4 @@ jobs:
       run: skaffold build
 
     - name: Deploy Artifact
-      run: scaffold run
+      run: skaffold run
