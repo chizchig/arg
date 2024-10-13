@@ -47,7 +47,7 @@ jobs:
         fi
       
     - name: Skaffold Initialization
-      run: skaffold init --skip-build
+      run: skaffold init --skip-build --force
       
 
     - name: Build Artifact
