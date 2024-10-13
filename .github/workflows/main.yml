@@ -1,0 +1,39 @@
+name: Deployment
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    scaffold:
+        name: 'scaffold'
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: 'Checkout'
+          uses: actions/checkout@v2
+
+        - name: 'Install kustomize'
+          run: |
+            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+            sudo mv kustomize /usr/local/bin
+
+        - name: 'Install Scaffold'
+          run: | 
+            curl -L https://github.com/scaffold/scaffold/releases/latest/download/scaffold-linux-amd64 -o scaffold
+            chmod +x scaffold
+            sudo mv scaffold /usr/local/bin
+            echo "Installing Scaffold"
+
+        - name: Scaffold Initialization
+          run: scaffold init --skip-build
+
+        - name: Build Artifact
+          run: scaffold build---manifests.kustomize.paths=overlay/dev

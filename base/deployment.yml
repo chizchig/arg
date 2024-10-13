@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  managedFields:
+  name: trivial-deployment
+  namespace: argocd
+  labels:
+    app: trivial-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trivial-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: trivial-app
+    spec:
+      imagePullSecrets:
+        - name: trivial-access-token
+      containers:
+        - name: beer
+          image: shadowhub/beer_factory_app:latest
+          imagePullPolicy: Always
+          ports: 
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 64m
+              memory: 250Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000

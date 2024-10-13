@@ -1,0 +1,8 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: argocd
+manifests:
+  kustomize:
+    paths:
+      - overlay/dev
