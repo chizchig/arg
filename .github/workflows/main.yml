@@ -11,42 +11,36 @@ permissions:
     contents: read
 
 jobs:
-    scaffold:
-        name: 'scaffold'
-        runs-on: ubuntu-latest
+  skaffold:
+    name: 'Skaffold'
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: 'Checkout'
-          uses: actions/checkout@v2
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
 
-        - name: 'Install kustomize'
-          run: |
-            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-            sudo mv kustomize /usr/local/bin
+    - name: 'Install kustomize'
+      run: |
+        curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+        sudo mv kustomize /usr/local/bin
 
-        - name: 'Check for Scaffold in repository'
-          run: |
-            if [ -f "./scaffold" ]; then
-              echo "Scaffold found in repository"
-              chmod +x ./scaffold
-              sudo mv ./scaffold /usr/local/bin/
-            else
-              echo "Scaffold not found in repository"
-              echo "Please add the Scaffold binary to your repository or provide the correct download URL"
-              exit 1
-            fi
+    - name: 'Download Skaffold'
+      run: |
+        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+        chmod +x skaffold
+        sudo mv skaffold /usr/local/bin/
 
-        - name: 'Verify Scaffold Installation'
-          run: |
-            echo "Scaffold location: $(which scaffold)"
-            echo "Scaffold file type: $(file /usr/local/bin/scaffold)"
-            echo "Scaffold version:"
-            scaffold --version || echo "Failed to get version"
-            echo "Scaffold help:"
-            scaffold --help || echo "Failed to get help"
+    - name: 'Verify Skaffold Installation'
+      run: |
+        echo "Skaffold location: $(which skaffold)"
+        echo "Skaffold file type: $(file /usr/local/bin/skaffold)"
+        echo "Skaffold version:"
+        skaffold version || echo "Failed to get version"
+        echo "Skaffold help:"
+        skaffold --help || echo "Failed to get help"
 
-        - name: Scaffold Initialization
-          run: scaffold init --skip-build
+    - name: Skaffold Initialization
+      run: skaffold init --skip-build
 
-        - name: Build Artifact
-          run: scaffold build --manifests.kustomize.paths=overlay/dev
+    - name: Build Artifact
+      run: skaffold build --manifests.kustomize.paths=overlay/dev
