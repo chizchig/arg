@@ -39,8 +39,16 @@ jobs:
         echo "Skaffold help:"
         skaffold --help || echo "Failed to get help"
 
+    - name: Remove Existing Skaffold Config
+      run: |
+        if [ -f "skaffold.yaml" ]; then
+        rm skaffold.yaml
+        echo "Removed existing skaffold.yaml."
+        fi
+      
     - name: Skaffold Initialization
       run: skaffold init --skip-build
+      
 
     - name: Build Artifact
       run: skaffold build --manifests.kustomize.paths=overlay/dev
