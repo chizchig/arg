@@ -49,6 +49,8 @@ jobs:
     - name: Skaffold Initialization
       run: skaffold init --skip-build --force
       
-
     - name: Build Artifact
       run: skaffold build
+
+    - name: Deploy Artifact
+      run: scaffold run
