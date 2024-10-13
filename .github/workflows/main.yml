@@ -6,7 +6,6 @@ on:
             - master
     pull_request:
 
-
 permissions:
     id-token: write
     contents: read
@@ -32,8 +31,14 @@ jobs:
             sudo mv scaffold /usr/local/bin
             echo "Installing Scaffold"
 
+        - name: 'Verify Scaffold Installation'
+          run: |
+            which scaffold
+            file /usr/local/bin/scaffold
+            cat /usr/local/bin/scaffold | head -n 5
+
         - name: Scaffold Initialization
           run: scaffold init --skip-build
 
         - name: Build Artifact
-          run: scaffold build---manifests.kustomize.paths=overlay/dev
+          run: scaffold build --manifests.kustomize.paths=overlay/dev
