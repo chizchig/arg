@@ -2,6 +2,9 @@ apiVersion: skaffold/v4beta7
 kind: Config
 metadata:
   name: argocd
+build:
+  artifacts:
+  - image: shadowhub/beer_factory_app:latest
 manifests:
   kustomize:
     paths:

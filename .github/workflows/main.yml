@@ -51,4 +51,4 @@ jobs:
       
 
     - name: Build Artifact
-      run: skaffold build --manifests.kustomize.paths=overlay/dev
+      run: skaffold build
