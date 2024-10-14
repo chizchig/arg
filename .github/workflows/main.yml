@@ -24,6 +24,9 @@ jobs:
         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
         sudo mv kustomize /usr/local/bin
 
+    - name: 'Install conntrack (required by Minikube)'
+      run: sudo apt-get install -y conntrack
+
     - name: 'Install Minikube and Start'
       run: |
         curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
@@ -31,7 +34,7 @@ jobs:
         sudo mv minikube /usr/local/bin/
         sudo minikube start --driver=none
 
-    - name: 'Set up Kubeconfig'
+    - name: 'Set up Kubeconfig for Minikube'
       run: |
         mkdir -p ~/.kube
         sudo minikube update-context
@@ -57,15 +60,15 @@ jobs:
     - name: Remove Existing Skaffold Config
       run: |
         if [ -f "skaffold.yaml" ]; then
-        rm skaffold.yaml
-        echo "Removed existing skaffold.yaml."
+          rm skaffold.yaml
+          echo "Removed existing skaffold.yaml."
         fi
-      
+
     - name: Skaffold Initialization
       run: skaffold init --skip-build --force
-      
+
     - name: Build Artifact
       run: skaffold build
 
     - name: Deploy Artifact
-      run: skaffold run \
+      run: skaffold run
