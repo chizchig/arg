@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  managedFields:
   name: trivial-deployment
   namespace: argocd
   labels:
