@@ -1,23 +1,11 @@
-# apiVersion: skaffold/v4beta7
-# kind: Config
-# metadata:
-#   name: argocd
-# build:
-#   artifacts:
-#   - image: shadowhub/beer_factory_app:latest
-# manifests:
-#   kustomize:
-#     paths:
-#       - overlay/dev
-
-apiVersion: skaffold/v4beta11
+apiVersion: skaffold/v4beta7
 kind: Config
 metadata:
-  name: arg
+  name: argocd
 build:
-  platforms:
-    - linux/amd64  # Or the platform your cluster runs on
-deploy:
+  artifacts:
+  - image: shadowhub/beer_factory_app:latest
+manifests:
   kustomize:
     paths:
-    - overlay/dev
+      - overlay/dev
