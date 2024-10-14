@@ -31,7 +31,7 @@ spec:
       labels:
         app: trivial-app
     spec:
-      serviceAccount: trivial-service-account
+      serviceAccountName: trivial-service-account
       imagePullSecrets:
         - name: trivial-access-token
       containers:
