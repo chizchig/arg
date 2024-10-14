@@ -19,6 +19,11 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v2
 
+    - name: 'Verify System Architecture'
+      run: |
+        uname -a
+        arch
+
     - name: 'Install Docker'
       run: |
         sudo apt-get update
@@ -78,3 +83,6 @@ jobs:
 
     - name: Deploy Artifact
       run: skaffold run
+
+    - name: Apply Additional Resources
+      run: skaffold apply
