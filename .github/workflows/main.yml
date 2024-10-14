@@ -77,5 +77,6 @@ jobs:
     - name: Build Artifact
       run: skaffold build
 
+    #    Deployment
     - name: Deploy Artifact
       run: skaffold run
