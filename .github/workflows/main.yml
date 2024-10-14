@@ -24,8 +24,14 @@ jobs:
         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
         sudo mv kustomize /usr/local/bin
 
-    - name: 'Install conntrack (required by Minikube)'
-      run: sudo apt-get install -y conntrack
+    - name: 'Install conntrack and crictl (required by Minikube)'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y conntrack
+        VERSION="v1.24.2"
+        curl -L https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz --output crictl-$VERSION-linux-amd64.tar.gz
+        sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+        rm -f crictl-$VERSION-linux-amd64.tar.gz
 
     - name: 'Install Minikube and Start'
       run: |
@@ -36,8 +42,9 @@ jobs:
 
     - name: 'Set up Kubeconfig for Minikube'
       run: |
-        mkdir -p ~/.kube
-        sudo minikube update-context
+        mkdir -p $HOME/.kube
+        sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
     - name: 'Verify Kubernetes Context'
       run: kubectl config current-context
@@ -53,9 +60,9 @@ jobs:
         echo "Skaffold location: $(which skaffold)"
         echo "Skaffold file type: $(file /usr/local/bin/skaffold)"
         echo "Skaffold version:"
-        skaffold version || echo "Failed to get version"
+        skaffold version
         echo "Skaffold help:"
-        skaffold --help || echo "Failed to get help"
+        skaffold --help
 
     - name: Remove Existing Skaffold Config
       run: |
