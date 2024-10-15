@@ -4,7 +4,7 @@ metadata:
   name: argocd
 build:
   artifacts:
-  - image: shadowhub/beer_factory_app:latest
+  - image: shadowhub/cocomaster:20240506044802
 manifests:
   kustomize:
     paths:

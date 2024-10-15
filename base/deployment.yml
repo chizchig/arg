@@ -76,7 +76,3 @@ spec:
       volumes:
         - name: nginx-cache
           emptyDir: {}  # Temporary storage for NGINX cache
-      securityContext:
-        runAsUser: 1000  # Non-root user ID
-        runAsGroup: 1000  # Non-root group ID
-        fsGroup: 1000
