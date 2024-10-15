@@ -51,21 +51,21 @@ spec:
             runAsUser: 0
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 2m
+              memory: 1Gi
             requests:
               cpu: 64m
               memory: 25Mi
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 3000
+              port: 80
             initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 3000
+              port: 80
             initialDelaySeconds: 30
             periodSeconds: 5
       volumes:
