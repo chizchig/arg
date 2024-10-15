@@ -35,7 +35,7 @@ spec:
       imagePullSecrets:
         - name: trivial-access-token
       containers:
-        - name: beer
+        - name: coco
           image: shadowhub/cocomaster:latest
           imagePullPolicy: Always
           ports: 
