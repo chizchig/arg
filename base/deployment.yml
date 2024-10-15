@@ -54,8 +54,8 @@ spec:
               cpu: 2m
               memory: 1Gi
             requests:
-              cpu: 64m
-              memory: 25Mi
+              cpu: 500m
+              memory: 512Mi
           readinessProbe:
             httpGet:
               path: /healthz
