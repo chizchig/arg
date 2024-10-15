@@ -33,6 +33,8 @@ spec:
       serviceAccountName: trivial-service-account
       imagePullSecrets:
         - name: trivial-access-token
+      securityContext:         # Pod-level security context
+        fsGroup: 1000          # Ensure group ownership of mounted volumes
       initContainers:
         - name: fix-permission
           image: busybox
@@ -71,7 +73,6 @@ spec:
           securityContext:
             runAsNonRoot: true  # Ensure the container doesn't run as root
             runAsUser: 1000      # Set non-root user
-            fsGroup: 1000        # File system group to ensure access to volumes
       volumes:
         - name: nginx-cache
           emptyDir: {}  # Temporary storage for NGINX cache
