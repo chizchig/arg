@@ -37,13 +37,6 @@ spec:
         runAsUser: 1000  # Non-root user ID
         runAsGroup: 1000  # Non-root group ID
         fsGroup: 1000     # Ensure group ownership of mounted volumes
-      initContainers:
-        - name: fix-permission
-          image: busybox
-          command: ['sh', '-c', 'mkdir -p /var/cache/nginx/client_temp && chmod -R 777 /var/cache/nginx']
-          volumeMounts:
-            - name: nginx-cache
-              mountPath: /var/cache/nginx
       containers:
         - name: coco
           image: shadowhub/cocomaster:20240506044802
