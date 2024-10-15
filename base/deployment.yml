@@ -36,7 +36,7 @@ spec:
         - name: trivial-access-token
       containers:
         - name: coco
-          image: shadowhub/cocomaster:latest
+          image: shadowhub/cocomaster:20240506044802
           imagePullPolicy: Always
           ports: 
             - containerPort: 3000
