@@ -44,6 +44,8 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx  # Mounting emptyDir here
             - name: nginx-storage  # Referencing this volume
               mountPath: /var/run
           resources:
@@ -71,5 +73,5 @@ spec:
       volumes:
         - name: nginx-cache
           emptyDir: {}  # Temporary storage for NGINX cache
-        - name: nginx-storage  # Define this volume
-          emptyDir: {}         # This is an emptyDir volume for temporary storage
+        - name: nginx-storage
+          emptyDir: {}  # This is an emptyDir volume for temporary storage
