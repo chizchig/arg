@@ -8,7 +8,6 @@ imagePullSecrets:
 
 ---
 
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,12 +33,22 @@ spec:
       serviceAccountName: trivial-service-account
       imagePullSecrets:
         - name: trivial-access-token
+      initContainers:
+        - name: fix-permission
+          image: busybox
+          command: ['sh', '-c', 'mkdir -p /var/cache/nginx/client_temp && chmod -R 777 /var/cache/nginx']
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
       containers:
         - name: coco
           image: shadowhub/cocomaster:20240506044802
           imagePullPolicy: Always
-          ports: 
+          ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
           resources:
             limits:
               cpu: 500m
@@ -62,3 +71,6 @@ spec:
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
