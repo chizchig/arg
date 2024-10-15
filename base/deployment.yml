@@ -36,7 +36,7 @@ spec:
         - name: trivial-access-token
       containers:
         - name: beer
-          image: shadowhub/beer_factory_app:latest
+          image: shadowhub/cocomaster:latest
           imagePullPolicy: Always
           ports: 
             - containerPort: 3000
@@ -62,4 +62,3 @@ spec:
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
-            
