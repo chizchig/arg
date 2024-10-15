@@ -33,8 +33,10 @@ spec:
       serviceAccountName: trivial-service-account
       imagePullSecrets:
         - name: trivial-access-token
-      securityContext:         # Pod-level security context
-        fsGroup: 1000          # Ensure group ownership of mounted volumes
+      securityContext:
+        runAsUser: 1000  # Non-root user ID
+        runAsGroup: 1000  # Non-root group ID
+        fsGroup: 1000     # Ensure group ownership of mounted volumes
       initContainers:
         - name: fix-permission
           image: busybox
@@ -49,7 +51,7 @@ spec:
           ports:
             - containerPort: 3000
           volumeMounts:
-            - name: nginx-storage
+            - name: nginx-storage  # Referencing this volume
               mountPath: /var/run
           resources:
             limits:
@@ -76,3 +78,5 @@ spec:
       volumes:
         - name: nginx-cache
           emptyDir: {}  # Temporary storage for NGINX cache
+        - name: nginx-storage  # Define this volume
+          emptyDir: {}         # This is an emptyDir volume for temporary storage
