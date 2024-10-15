@@ -69,8 +69,9 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 5
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
+            runAsNonRoot: true  # Ensure the container doesn't run as root
+            runAsUser: 1000      # Set non-root user
+            fsGroup: 1000        # File system group to ensure access to volumes
       volumes:
         - name: nginx-cache
-          emptyDir: {}
+          emptyDir: {}  # Temporary storage for NGINX cache
